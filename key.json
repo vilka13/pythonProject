@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "gratkaproject",
+  "private_key_id": "ad283c1a88e38a677e1b622c949ad3b12128f9c4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDD8EkjZoRsAqRh\nTC59uP4fqcLE0nBsCI2vzNrYlrq17Fzq5AEKb84Y9g3j1VPB1UgvDs42hZBuPkLo\n1xYV4BmUJB6N+iWOSq1Axkmu0rmHBK+ClmaX/7+qBwNfWfzlUucp4N/mR12yYiDt\nanpqinjJ05ds6lIW5GcEe+RqudK9Djs88/NybZw19oFpyyPohkM3xjogfS3neYQS\nC3GAGX43acA10/VD0UStZkVdhn1UJZTvP+RI3qib5ZcOcLE4xCUOKjqtQ4vUJwst\n/sUPSYNAF9+vxuoODfy9miyl5jUgJN77cJ2qGwVDR3n9crP/zYua1QqRx2gV7Yy4\npqlQpUZbAgMBAAECggEAALK29/7SAvaBcm1MjxsdIKzAqmXbi67+Hj27G+FxmdtV\nO2sDi+95CwK5avHkIgEqCCzj1DLmoFXtdBnsFLjfLnVwfG4DOz4N3vi1438RtSbx\nnyP9CpaZLrhmrSzLZ1/DvhT0h0QC0/Ngjaf+9qk2o/VyiStOjpFSwqPUXQL7erv0\nJkR/XPtgqR3AgwTBsvXvGpYJ/L40F2lGAjIUYb0T23dhpFGEmKnVvscI0K+5DjQK\nLgUBFmGlAhGN6jEw8hQ/rE+7xaSjy0pKKJyEyuLV/MCVDADuCbsSC/skdp3glIWr\n33qknHdi/pmnK9itcWBwrrh2JNugmbbzN3U6eOMP8QKBgQDn7WlR15LGHY3lqLFd\njACAg5DDW2sBEc7Wlk5UzZ8es/aOw9mxqYjDdI5hiQh5y+3GqSKQilLKQ3kJUK5Z\nlMzyKoCIn2HpWVIsuvkrk6buIFH8qO1hQKqYbPkKArkhdYKKOyb0vGdgi+xLMdO2\nsdZv8mjLqhoNlK8a0QsvECuxEQKBgQDYRpwHlsDqYoI7hrMGzvI6u7oLBHNibjV0\ngawInSTAfkEwrY3RYeViZpV1Z1zbmI8YNpBT3qJ3Dc2Zh+vaW/DkbwDDuzPuNJKY\nZAbNHcFrXaQeryqeja4wLm9P2is3aJOlKypQjTlxM6GZsO0P4hogalIU5KOILVEo\njKtzjBYAqwKBgQCKv65dRvFI0o98UFJjm4kFWTA2ny9BwYyTNfKAq07BSHp9aE+J\nCNqHy+gOE7PdYZHLYo4KGKZ02K7FUt4rO2jsi16/3VHvDv+pQOYmGrwoA2/pDoqM\nvuoQLElEouJsUOeamM6yZTAXQz5GsfVte7DE4imthgL2Evg6u8rMCgmJcQKBgFpP\nMbwhgTDeLY95sav4IkHQPeF33E6PwpaBxzpZlA0lK0eOURfLjyNFvsclgCraS3ZK\n4n2DC8g25VFk5mFp3u8kQud4djjTjxs/OW/RKwEQOwXtExjeBIxt92Eass0SSATC\nP4sfTYstih9JN9RYD5zViKzcxESK18bc5oL7Tfy9AoGBAIqCtm8hTTrK2mugm/EU\nn8rPXgtwK4y1lj/LvF00dz3UOauWDEEmu8/qrMpzxYBPEi+SrP4emfg0Td3Q2Cbe\nftERx3eiFDB7U/3UOpW2Gf3exWKQJwkW+RZ+jNfenfezWpF+tqIPRrsQtdItmDOx\nir1A0gHAbZX+0SVf0/oW6Mxg\n-----END PRIVATE KEY-----\n",
+  "client_email": "gratka@gratkaproject.iam.gserviceaccount.com",
+  "client_id": "105154676349159614717",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gratka%40gratkaproject.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
