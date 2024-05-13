@@ -1,13 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import Scrollbar
 import pandas as pd
 from google.cloud import storage
 import os
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
 
+
 def download_file():
-    # Функция загрузки файла из Google Cloud Storage
     def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
         storage_client = storage.Client()
         bucket = storage_client.bucket(bucket_name)
@@ -15,66 +16,97 @@ def download_file():
         blob.upload_from_filename(source_file_name)
         print(f'File {source_file_name} uploaded to {destination_blob_name} in {bucket_name}.')
 
-    # Указываем путь к локальному файлу для загрузки
     source_file_name = 'output1.csv'
-    # Указываем имя бакета в Google Cloud Storage
     bucket_name = 'gratka_bucket'
-    # Указываем имя, под которым файл будет сохранен в бакете
     destination_blob_name = 'output1.csv'
 
-    # Загружаем файл в Google Cloud Storage
     upload_to_gcs(bucket_name, source_file_name, destination_blob_name)
     print("File uploaded successfully!")
 
+
 def display_csv_data():
-    # Функция для отображения данных из CSV
     def display_data():
-        # Чтение данных из CSV
         df = pd.read_csv('output1.csv')
 
-        # Очистка таблицы перед отображением новых данных
         for row in tree.get_children():
             tree.delete(row)
 
-        # Отображение данных по столбцам
         for index, row in df.iterrows():
             tree.insert("", tk.END, values=list(row))
 
-    # Создание нового окна для отображения данных
+    def sort_data_by_price(reverse=False):
+        df = pd.read_csv('output1.csv')
+
+        # Сортировка по столбцу 'Price' от самых дешевых до самых дорогих или наоборот
+        df_sorted = df.sort_values(by='Price', ascending=not reverse)
+
+        for row in tree.get_children():
+            tree.delete(row)
+
+        for index, row in df_sorted.iterrows():
+            tree.insert("", tk.END, values=list(row))
+
+        print("Data sorted by price.")
+
     data_window = tk.Toplevel(root)
     data_window.title("CSV Data Viewer")
 
-    # Создание виджета Treeview для отображения данных
-    tree = ttk.Treeview(data_window)
+    tree_frame = tk.Frame(data_window)
+    tree_frame.pack(fill=tk.BOTH, expand=True)
 
-    # Определение колонок в Treeview
+    tree = ttk.Treeview(tree_frame)
     df = pd.read_csv('output1.csv')
     tree["columns"] = df.columns.tolist()
 
-    # Настройка заголовков колонок
     for col in df.columns:
         tree.heading(col, text=col)
 
-    # Отображение данных при открытии окна
     display_data()
+    tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-    # Пакет виджета Treeview
-    tree.pack(expand=True, fill=tk.BOTH)
+    # Ползунки прокрутки
+    yscroll = Scrollbar(tree_frame, orient=tk.VERTICAL, command=tree.yview)
+    yscroll.pack(side=tk.RIGHT, fill=tk.Y)
+    xscroll = Scrollbar(data_window, orient=tk.HORIZONTAL, command=tree.xview)
+    xscroll.pack(side=tk.BOTTOM, fill=tk.X)
 
-    # Кнопка для загрузки данных из CSV и их отображения
+    tree.config(xscrollcommand=xscroll.set, yscrollcommand=yscroll.set)
+
     display_button = tk.Button(data_window, text="Display CSV Data", command=display_data)
     display_button.pack(pady=10)
 
-# Создание графического интерфейса
+    sort_button_cheap = tk.Button(data_window, text="najpierw najtańszy",
+                                  command=lambda: sort_data_by_price(False))
+    sort_button_cheap.pack(side=tk.LEFT, padx=5, pady=5)
+
+    sort_button_expensive = tk.Button(data_window, text="najpierw najdroższe",
+                                      command=lambda: sort_data_by_price(True))
+    sort_button_expensive.pack(side=tk.LEFT, padx=5, pady=5)
+
+
 root = tk.Tk()
 root.title("Google Cloud Storage Uploader")
 
-# Кнопка для загрузки файла
 upload_button = tk.Button(root, text="Upload File to GCS", command=download_file)
 upload_button.pack(pady=10)
 
-# Кнопка для отображения данных из CSV
 display_button = tk.Button(root, text="Display CSV Data", command=display_csv_data)
 display_button.pack(pady=10)
+
+
+# Функция для центрирования окна приложения
+def center_window(window, width, height):
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+
+    x_coordinate = int((screen_width / 2) - (width / 2))
+    y_coordinate = int((screen_height / 2) - (height / 2))
+
+    window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
+
+
+# Применяем центрирование при запуске программы
+root.update()
+center_window(root, root.winfo_width(), root.winfo_height())
 
 root.mainloop()
