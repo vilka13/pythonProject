@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import Scrollbar
 import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from google.cloud import storage
 import os
 import requests
@@ -55,6 +57,35 @@ def display_csv_data():
 
         print("Data sorted by built year.")
 
+    def plot_data():
+        df = pd.read_csv('output1.csv')
+
+        # Convert values in 'Built In' column to numeric format (if they are not 'NULL')
+        df['Built In'] = pd.to_numeric(df['Built In'], errors='coerce')
+
+        # Remove rows with NaN values
+        df = df.dropna(subset=['Built In'])
+
+        # Sort by built year from newest to oldest
+        df_sorted = df.sort_values(by='Built In', ascending=False)
+
+        # Plotting
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.plot(df_sorted['Built In'], marker='o')
+        ax.set_title('Built In Year Distribution')
+        ax.set_xlabel('Index')
+        ax.set_ylabel('Built In Year')
+        ax.grid(True)
+
+        # Create a new window for the plot
+        plot_window = tk.Toplevel()
+        plot_window.title("Plot")
+
+        # Embed the plot into a Tkinter window
+        canvas = FigureCanvasTkAgg(fig, master=plot_window)
+        canvas.draw()
+        canvas.get_tk_widget().pack()
+
     data_window = tk.Toplevel(root)
     data_window.title("CSV Data Viewer")
 
@@ -81,13 +112,16 @@ def display_csv_data():
     display_button = tk.Button(data_window, text="Display CSV Data", command=display_data)
     display_button.pack(pady=10)
 
-    sort_button_built_in = tk.Button(data_window, text="Rok budowy (od starszego do nowego)",
+    sort_button_built_in = tk.Button(data_window, text="Sort by Built In (Newest to Oldest)",
                                      command=lambda: sort_data_by_built_in(True))
     sort_button_built_in.pack(side=tk.LEFT, padx=5, pady=5)
 
-    sort_button_built_in_reverse = tk.Button(data_window, text="Rok budowy(od nowego do starszego)",
+    sort_button_built_in_reverse = tk.Button(data_window, text="Sort by Built In (Oldest to Newest)",
                                              command=lambda: sort_data_by_built_in(False))
     sort_button_built_in_reverse.pack(side=tk.LEFT, padx=5, pady=5)
+
+    plot_button = tk.Button(data_window, text="Plot Built In Year Distribution", command=plot_data)
+    plot_button.pack(side=tk.LEFT, padx=5, pady=5)
 
 root = tk.Tk()
 root.title("Google Cloud Storage Uploader")
