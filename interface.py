@@ -4,9 +4,11 @@ from tkinter import Scrollbar
 import pandas as pd
 from google.cloud import storage
 import os
+import requests
+import re
+from bs4 import BeautifulSoup
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
-
 
 def download_file():
     def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
@@ -23,7 +25,6 @@ def download_file():
     upload_to_gcs(bucket_name, source_file_name, destination_blob_name)
     print("File uploaded successfully!")
 
-
 def display_csv_data():
     def display_data():
         df = pd.read_csv('output1.csv')
@@ -34,11 +35,17 @@ def display_csv_data():
         for index, row in df.iterrows():
             tree.insert("", tk.END, values=list(row))
 
-    def sort_data_by_price(reverse=False):
+    def sort_data_by_built_in(reverse=True):
         df = pd.read_csv('output1.csv')
 
-        # Сортировка по столбцу 'Price' от самых дешевых до самых дорогих или наоборот
-        df_sorted = df.sort_values(by='Price', ascending=not reverse)
+        # Convert values in 'Built In' column to numeric format (if they are not 'NULL')
+        df['Built In'] = pd.to_numeric(df['Built In'], errors='coerce')
+
+        # Remove rows with NaN values
+        df = df.dropna(subset=['Built In'])
+
+        # Sort by built year from newest to oldest
+        df_sorted = df.sort_values(by='Built In', ascending=reverse)
 
         for row in tree.get_children():
             tree.delete(row)
@@ -46,7 +53,7 @@ def display_csv_data():
         for index, row in df_sorted.iterrows():
             tree.insert("", tk.END, values=list(row))
 
-        print("Data sorted by price.")
+        print("Data sorted by built year.")
 
     data_window = tk.Toplevel(root)
     data_window.title("CSV Data Viewer")
@@ -64,7 +71,6 @@ def display_csv_data():
     display_data()
     tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-    # Ползунки прокрутки
     yscroll = Scrollbar(tree_frame, orient=tk.VERTICAL, command=tree.yview)
     yscroll.pack(side=tk.RIGHT, fill=tk.Y)
     xscroll = Scrollbar(data_window, orient=tk.HORIZONTAL, command=tree.xview)
@@ -75,14 +81,13 @@ def display_csv_data():
     display_button = tk.Button(data_window, text="Display CSV Data", command=display_data)
     display_button.pack(pady=10)
 
-    sort_button_cheap = tk.Button(data_window, text="najpierw najtańszy",
-                                  command=lambda: sort_data_by_price(False))
-    sort_button_cheap.pack(side=tk.LEFT, padx=5, pady=5)
+    sort_button_built_in = tk.Button(data_window, text="Rok budowy (od starszego do nowego)",
+                                     command=lambda: sort_data_by_built_in(True))
+    sort_button_built_in.pack(side=tk.LEFT, padx=5, pady=5)
 
-    sort_button_expensive = tk.Button(data_window, text="najpierw najdroższe",
-                                      command=lambda: sort_data_by_price(True))
-    sort_button_expensive.pack(side=tk.LEFT, padx=5, pady=5)
-
+    sort_button_built_in_reverse = tk.Button(data_window, text="Rok budowy(od nowego do starszego)",
+                                             command=lambda: sort_data_by_built_in(False))
+    sort_button_built_in_reverse.pack(side=tk.LEFT, padx=5, pady=5)
 
 root = tk.Tk()
 root.title("Google Cloud Storage Uploader")
@@ -93,8 +98,7 @@ upload_button.pack(pady=10)
 display_button = tk.Button(root, text="Display CSV Data", command=display_csv_data)
 display_button.pack(pady=10)
 
-
-# Функция для центрирования окна приложения
+# Function for centering the application window
 def center_window(window, width, height):
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
@@ -104,8 +108,7 @@ def center_window(window, width, height):
 
     window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
 
-
-# Применяем центрирование при запуске программы
+# Apply centering when the program launches
 root.update()
 center_window(root, root.winfo_width(), root.winfo_height())
 
