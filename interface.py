@@ -9,6 +9,7 @@ import os
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
 
+
 def download_file():
     def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
         storage_client = storage.Client()
@@ -23,6 +24,7 @@ def download_file():
 
     upload_to_gcs(bucket_name, source_file_name, destination_blob_name)
     print("File uploaded successfully!")
+
 
 def display_csv_data():
     def display_data(df):
@@ -139,6 +141,7 @@ def display_csv_data():
     plot_button = ttk.Button(data_window, text="Plot Built In vs. Square", command=plot_built_in_vs_square)
     plot_button.pack(side=tk.LEFT, padx=5, pady=5)
 
+
 root = tk.Tk()
 root.title("Google Cloud Storage Uploader")
 
@@ -157,7 +160,12 @@ display_button.pack
 display_button = ttk.Button(root, text="Display CSV Data", command=display_csv_data)
 display_button.pack(pady=10)
 
+<<<<<<< HEAD
 # Функция для центрирования окна приложения
+=======
+
+# Function for centering the application window
+>>>>>>> eacb379b046aa588741a5928e905bb0693a1384e
 def center_window(window, width, height):
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
@@ -167,7 +175,12 @@ def center_window(window, width, height):
 
     window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
 
+<<<<<<< HEAD
 # Применяем центрирование при запуске программы
+=======
+
+# Apply centering when the program launches
+>>>>>>> eacb379b046aa588741a5928e905bb0693a1384e
 root.update()
 center_window(root, root.winfo_width(), root.winfo_height())
 
