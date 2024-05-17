@@ -6,11 +6,9 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from google.cloud import storage
 import os
-import requests
-import re
-from bs4 import BeautifulSoup
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
+
 
 def download_file():
     def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
@@ -26,6 +24,7 @@ def download_file():
 
     upload_to_gcs(bucket_name, source_file_name, destination_blob_name)
     print("File uploaded successfully!")
+
 
 def display_csv_data():
     def display_data():
@@ -123,6 +122,7 @@ def display_csv_data():
     plot_button = tk.Button(data_window, text="Plot Built In Year Distribution", command=plot_data)
     plot_button.pack(side=tk.LEFT, padx=5, pady=5)
 
+
 root = tk.Tk()
 root.title("Google Cloud Storage Uploader")
 
@@ -131,6 +131,7 @@ upload_button.pack(pady=10)
 
 display_button = tk.Button(root, text="Display CSV Data", command=display_csv_data)
 display_button.pack(pady=10)
+
 
 # Function for centering the application window
 def center_window(window, width, height):
@@ -141,6 +142,7 @@ def center_window(window, width, height):
     y_coordinate = int((screen_height / 2) - (height / 2))
 
     window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
+
 
 # Apply centering when the program launches
 root.update()
