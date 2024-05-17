@@ -7,7 +7,6 @@ def main():
     # Выполняем основную логику парсера
     parser.main()
 
-
     # Задаем переменные
     source_file_name = 'output1.csv'
     bucket_name = 'gratka_bucket'

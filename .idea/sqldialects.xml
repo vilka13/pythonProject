@@ -3,6 +3,5 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/googleCloud.py" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/interface.py" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/parser.py" dialect="GenericSQL" />
   </component>
 </project>
