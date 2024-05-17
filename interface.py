@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from ttkthemes import ThemedStyle  # Импортируем стили из ttkthemes
+from ttkthemes import ThemedStyle
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -8,6 +8,7 @@ from google.cloud import storage
 import os
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
+
 
 def download_file():
     def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
@@ -23,6 +24,7 @@ def download_file():
 
     upload_to_gcs(bucket_name, source_file_name, destination_blob_name)
     print("File uploaded successfully!")
+
 
 def display_csv_data():
     def display_data(df):
@@ -139,6 +141,7 @@ def display_csv_data():
     plot_button = ttk.Button(data_window, text="Plot Built In vs. Square", command=plot_built_in_vs_square)
     plot_button.pack(side=tk.LEFT, padx=5, pady=5)
 
+
 root = tk.Tk()
 root.title("Google Cloud Storage Uploader")
 
@@ -150,12 +153,11 @@ upload_button = ttk.Button(root, text="Upload File to GCS", command=download_fil
 upload_button.pack(pady=10)
 
 display_button = ttk.Button(root, text="Display CSV Data", command=display_csv_data)
-display_button.pack
-
-
+var = display_button.pack
 
 display_button = ttk.Button(root, text="Display CSV Data", command=display_csv_data)
 display_button.pack(pady=10)
+
 
 # Функция для центрирования окна приложения
 def center_window(window, width, height):
@@ -167,10 +169,9 @@ def center_window(window, width, height):
 
     window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
 
+
 # Применяем центрирование при запуске программы
 root.update()
 center_window(root, root.winfo_width(), root.winfo_height())
 
 root.mainloop()
-
-
