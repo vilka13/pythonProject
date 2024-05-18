@@ -1,6 +1,5 @@
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import ttk
-from ttkthemes import ThemedStyle
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -10,14 +9,15 @@ import os
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
 
 
-def download_file():
-    def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
-        storage_client = storage.Client()
-        bucket = storage_client.bucket(bucket_name)
-        blob = bucket.blob(destination_blob_name)
-        blob.upload_from_filename(source_file_name)
-        print(f'File {source_file_name} uploaded to {destination_blob_name} in {bucket_name}.')
+def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+    blob.upload_from_filename(source_file_name)
+    print(f'File {source_file_name} uploaded to {destination_blob_name} in {bucket_name}.')
 
+
+def download_file():
     source_file_name = 'output1.csv'
     bucket_name = 'gratka_bucket'
     destination_blob_name = 'output1.csv'
@@ -32,7 +32,7 @@ def display_csv_data():
             tree.delete(row)
 
         for index, row in df.iterrows():
-            tree.insert("", tk.END, values=list(row))
+            tree.insert("", "end", values=list(row))
 
     def sort_data_by_built_in():
         df = pd.read_csv('output1.csv')
@@ -87,7 +87,7 @@ def display_csv_data():
         plt.xticks(rotation=45)
 
         # Create a new window for the plot
-        plot_window = tk.Toplevel()
+        plot_window = ctk.CTkToplevel()
         plot_window.title("Built In Year vs. Square")
 
         # Embed the plot into a Tkinter window
@@ -95,67 +95,60 @@ def display_csv_data():
         canvas.draw()
         canvas.get_tk_widget().pack()
 
-    data_window = tk.Toplevel(root)
+    # Hide the root window
+    root.withdraw()
+
+    data_window = ctk.CTkToplevel(root)
     data_window.title("CSV Data Viewer")
 
-    # Используем стилизацию из ttkthemes
-    style = ThemedStyle(data_window)
-    style.set_theme("arc")  # Выбираем тему оформления
-
-    tree_frame = ttk.Frame(data_window)
-    tree_frame.pack(fill=tk.BOTH, expand=True)
+    tree_frame = ctk.CTkFrame(data_window)
+    tree_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
     tree = ttk.Treeview(tree_frame)
     df = pd.read_csv('output1.csv')
     tree["columns"] = df.columns.tolist()
+    tree["show"] = "headings"
 
     for col in df.columns:
         tree.heading(col, text=col)
 
     display_data(df)
-    tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    tree.pack(side="left", fill="both", expand=True)
 
-    yscroll = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL, command=tree.yview)
-    yscroll.pack(side=tk.RIGHT, fill=tk.Y)
-    xscroll = ttk.Scrollbar(data_window, orient=tk.HORIZONTAL, command=tree.xview)
-    xscroll.pack(side=tk.BOTTOM, fill=tk.X)
+    yscroll = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
+    yscroll.pack(side="right", fill="y")
+    xscroll = ttk.Scrollbar(data_window, orient="horizontal", command=tree.xview)
+    xscroll.pack(side="bottom", fill="x")
 
-    tree.config(xscrollcommand=xscroll.set, yscrollcommand=yscroll.set)
+    tree.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
 
-    display_button = ttk.Button(data_window, text="Display CSV Data", command=lambda: display_data(df))
-    display_button.pack(pady=10)
+    sort_combobox_label = ctk.CTkLabel(data_window, text="Sort by Built In:")
+    sort_combobox_label.pack(side="left", padx=5, pady=5)
 
-    sort_combobox_label = ttk.Label(data_window, text="Sort by Built In:")
-    sort_combobox_label.pack(side=tk.LEFT, padx=5, pady=5)
+    sort_combobox = ctk.CTkComboBox(data_window, values=["Ascending", "Descending"])
+    sort_combobox.pack(side="left", padx=5, pady=5)
+    sort_combobox.set("Ascending")
 
-    sort_combobox = ttk.Combobox(data_window, values=["Ascending", "Descending"], state="readonly")
-    sort_combobox.pack(side=tk.LEFT, padx=5, pady=5)
-    sort_combobox.current(0)
+    sort_button_built_in = ctk.CTkButton(data_window, text="Sort", command=sort_data_by_built_in)
+    sort_button_built_in.pack(side="left", padx=5, pady=5)
 
-    sort_button_built_in = ttk.Button(data_window, text="Sort", command=sort_data_by_built_in)
-    sort_button_built_in.pack(side=tk.LEFT, padx=5, pady=5)
+    reset_button = ctk.CTkButton(data_window, text="Reset Data", command=reset_data)
+    reset_button.pack(side="left", padx=5, pady=5)
 
-    reset_button = ttk.Button(data_window, text="Reset Data", command=reset_data)
-    reset_button.pack(side=tk.LEFT, padx=5, pady=5)
+    plot_button = ctk.CTkButton(data_window, text="Plot Built In vs. Square", command=plot_built_in_vs_square)
+    plot_button.pack(side="left", padx=5, pady=5)
 
-    plot_button = ttk.Button(data_window, text="Plot Built In vs. Square", command=plot_built_in_vs_square)
-    plot_button.pack(side=tk.LEFT, padx=5, pady=5)
+    # Show the data window
+    data_window.mainloop()
 
 
-root = tk.Tk()
+root = ctk.CTk()
 root.title("Google Cloud Storage Uploader")
 
-# Используем стилизацию из ttkthemes
-style = ThemedStyle(root)
-style.set_theme("arc")  # Выбираем тему оформления
-
-upload_button = ttk.Button(root, text="Upload File to GCS", command=download_file)
+upload_button = ctk.CTkButton(root, text="Upload File to GCS", command=download_file)
 upload_button.pack(pady=10)
 
-display_button = ttk.Button(root, text="Display CSV Data", command=display_csv_data)
-var = display_button.pack
-
-display_button = ttk.Button(root, text="Display CSV Data", command=display_csv_data)
+display_button = ctk.CTkButton(root, text="Display CSV Data", command=display_csv_data)
 display_button.pack(pady=10)
 
 
