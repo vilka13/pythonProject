@@ -160,12 +160,6 @@ display_button.pack
 display_button = ttk.Button(root, text="Display CSV Data", command=display_csv_data)
 display_button.pack(pady=10)
 
-<<<<<<< HEAD
-# Функция для центрирования окна приложения
-=======
-
-# Function for centering the application window
->>>>>>> eacb379b046aa588741a5928e905bb0693a1384e
 def center_window(window, width, height):
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
@@ -175,12 +169,7 @@ def center_window(window, width, height):
 
     window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
 
-<<<<<<< HEAD
-# Применяем центрирование при запуске программы
-=======
 
-# Apply centering when the program launches
->>>>>>> eacb379b046aa588741a5928e905bb0693a1384e
 root.update()
 center_window(root, root.winfo_width(), root.winfo_height())
 
