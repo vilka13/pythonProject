@@ -62,38 +62,7 @@ def display_csv_data():
         display_data(df)
         print("Data reset to original state.")
 
-    def plot_built_in_vs_square():
-        df = pd.read_csv('output1.csv')
 
-        if 'Built In' not in df.columns or 'Square' not in df.columns:
-            print("The required columns are not present in the CSV file.")
-            return
-
-        # Convert values in 'Built In' and 'Square' columns to numeric format
-        df['Built In'] = pd.to_numeric(df['Built In'], errors='coerce')
-        df['Square'] = pd.to_numeric(df['Square'], errors='coerce')
-
-        # Remove rows with NaN values
-        df = df.dropna(subset=['Built In', 'Square'])
-
-        # Plotting
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(df['Built In'], df['Square'], marker='o')
-
-        ax.set_title('Built In Year vs. Square')
-        ax.set_xlabel('Built In Year')
-        ax.set_ylabel('Square')
-        ax.grid(True)
-        plt.xticks(rotation=45)
-
-        # Create a new window for the plot
-        plot_window = ctk.CTkToplevel()
-        plot_window.title("Built In Year vs. Square")
-
-        # Embed the plot into a Tkinter window
-        canvas = FigureCanvasTkAgg(fig, master=plot_window)
-        canvas.draw()
-        canvas.get_tk_widget().pack()
 
     # Hide the root window
     root.withdraw()
@@ -135,8 +104,6 @@ def display_csv_data():
     reset_button = ctk.CTkButton(data_window, text="Reset Data", command=reset_data)
     reset_button.pack(side="left", padx=5, pady=5)
 
-    plot_button = ctk.CTkButton(data_window, text="Plot Built In vs. Square", command=plot_built_in_vs_square)
-    plot_button.pack(side="left", padx=5, pady=5)
 
     # Show the data window
     data_window.mainloop()
